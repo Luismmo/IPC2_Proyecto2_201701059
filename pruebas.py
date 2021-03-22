@@ -1,4 +1,4 @@
-from tkinter import Tk, Label, Button
+""" from tkinter import Tk, Label, Button
 #from HorsePower import saludar
 class VentanaEjemplo:
     def __init__(self, master):
@@ -19,4 +19,15 @@ root = Tk()
 miVentana = VentanaEjemplo(root)
 root.geometry('900x400')
 root.resizable(width=False, height=False)
-root.mainloop()
+root.mainloop() """
+from MatrizOrtogonal import *
+matriz = Matriz()
+matriz.insertar('Luis',4,1)
+matriz.insertar('Gio',3,2)
+matriz.insertar('Armando',2,3)
+matriz.insertar('Cesar',1,4)
+matriz.insertar('Marvin',2,5)
+matriz.insertar('Evelin',3,6)
+matriz.insertar('Edwin',4,7)
+matriz.recorrerFilas()
+matriz.recorrerColumnas()
