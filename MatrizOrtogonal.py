@@ -22,13 +22,12 @@ class ListaEncabazado(object):
         self.tamanio = 0
 
     #metodo insertar nuevo nodo clase Encabezado
-    def insertar(self, numero):
-        nuevo = Encabezado(numero)
+    def insertar(self, nuevo):    
         if self.esVacia()==True: #insertar cuando está VACÍO
             self.inicio = nuevo
             #self.inicio.siguiente = self.inicio
             #self.tamanio+=1
-            print('que indice estoy comparando?'+ str(self.inicio.numero))
+            #print('que indice estoy comparando?'+ str(self.inicio.numero))
         else:            
             
             if int(nuevo.numero) < int(self.inicio.numero): # insertar al INICIO
@@ -66,9 +65,13 @@ class ListaEncabazado(object):
             return False
 
 class Matriz(object):
-    def __init__(self):
+    def __init__(self, nombre, filas, columnas):
+        self.nombre = nombre
+        self.filas = filas
+        self.columnas = columnas
         self.eFilas = ListaEncabazado()
         self.eColumnas = ListaEncabazado()
+        self.siguiente = None
 
     # metodo insertar
     def insertar(self, dato, fila, columna):
@@ -128,12 +131,13 @@ class Matriz(object):
         encabezadoFila = self.eFilas.inicio
         print('Recorrido por filas')
         while(encabezadoFila != None):
+            print('Fila '+str(encabezadoFila.numero))
             temporal = encabezadoFila.acceso
             while(temporal != None):
-                print(temporal.dato)
-                if encabezadoFila.siguiente != None or temporal.derecha != None:
-                    print('->')
-                temporal = temporal.siguiente
+                print(temporal.dato+" "+str(temporal.fila)+","+str(temporal.columna))
+                #if encabezadoFila.siguiente != None or temporal.derecha != None:
+                #    print('->')
+                temporal = temporal.derecha
             encabezadoFila = encabezadoFila.siguiente
         print('Fin filas')
     
@@ -147,6 +151,6 @@ class Matriz(object):
                 print(temporal.dato)
                 if encabezadoColumna.siguiente !=None or temporal.abajo != None:
                     print('->')
-                temporal = temporal.siguiente
+                temporal = temporal.derecha
             encabezadoColumna = encabezadoColumna.siguiente
         print('Fin columnas')

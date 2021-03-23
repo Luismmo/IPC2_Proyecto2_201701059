@@ -21,7 +21,8 @@ root.geometry('900x400')
 root.resizable(width=False, height=False)
 root.mainloop() """
 from MatrizOrtogonal import *
-matriz = Matriz()
+from xml.dom import minidom
+matriz = Matriz('prueba',4,7)
 matriz.insertar('Luis',4,1)
 matriz.insertar('Gio',3,2)
 matriz.insertar('Armando',2,3)
@@ -30,4 +31,6 @@ matriz.insertar('Marvin',2,5)
 matriz.insertar('Evelin',3,6)
 matriz.insertar('Edwin',4,7)
 matriz.recorrerFilas()
-matriz.recorrerColumnas()
+#matriz.recorrerColumnas()
+#mixml = minidom.parse('entrada.xml')
+#nombres = mixml.getElementsByTagName('matriz')
