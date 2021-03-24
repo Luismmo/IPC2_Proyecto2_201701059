@@ -7,8 +7,8 @@ from MatrizOrtogonal import *
 
 class Interfaz():
     def __init__(self):
-        self.opcionSeleccionada = ''
-        self.matrices = ListaEnlazada()        
+        self.operacionSeleccionada = ''
+        self.matrices = ListaEnlazada()            
         # Configuración de la raíz
         self.root = Tk()
         self.root.title("Proyecto 2 - IPC2")
@@ -20,7 +20,7 @@ class Interfaz():
 
         self.operacionesMatriz = Menu(self.menubar, tearoff=0)
         self.operacionesMatriz.add_command(label="Giro horizontal", command = lambda: self.botonApachado(1))
-        self.operacionesMatriz.add_command(label="Giro vertical")
+        self.operacionesMatriz.add_command(label="Giro vertical", command = lambda: self.botonApachado(2))
         self.operacionesMatriz.add_command(label="Transpuesta")
         self.operacionesMatriz.add_command(label="Limpiar zona")
         self.operacionesMatriz.add_command(label="Agregar linea horizontal")
@@ -46,7 +46,9 @@ class Interfaz():
         self.menubar.add_cascade(label ="Reporte", menu=self.reportemenu)
         self.menubar.add_cascade(label="Ayuda", menu=self.helpmenu)
 
-        self.titulo = Label(self.root)
+        self.titulo = Label(self.root, text = 'Bienvenido, para empezar cargue un archivo XML')        
+        self.titulo.grid(row =0, sticky = (N, S, E, W))
+        self.titulo.config(font = ('Verdana', 18))
         #FRAME BOTONES
         self.panelBotones = Frame(self.root, borderwidth = 2, relief = 'raised')        
 
@@ -65,8 +67,7 @@ class Interfaz():
         self.root.mainloop()
     
     def inicializarWidgets(self):
-        #AGREGO LOS FRAMES
-        self.titulo.grid(row =0, sticky = (N, S, E, W))
+        #AGREGO LOS FRAMES        
         self.panelBotones.grid(row = 1, padx = 5,pady = 5, sticky = (N, S, E, W))        
         self.panelOriginal.grid(row = 2, column = 0, padx = 5, pady = 5, sticky = (N, S, E, W))
         self.panelResultado.grid(row = 2, column = 1, padx = 5, pady = 5, sticky = (N, S, E, W))
@@ -84,14 +85,28 @@ class Interfaz():
 
     def botonApachado(self, valor):
         if valor == 1:
+            self.limpiarFramesMatrices()
             self.titulo.configure(text = 'Giro horizontal')
             self.titulo.config(font = ('Verdana', 18))
             self.inicializarWidgets()
+            self.operacionSeleccionada = 'horizontal'
+        if valor == 2:
+            self.limpiarFramesMatrices()
+            self.titulo.configure(text = 'Giro vertical')
+            self.titulo.config(font = ('Verdana', 18))
+            self.inicializarWidgets()
+            self.operacionSeleccionada = 'vertical'
             
     
     def Imprimir(self):
-        namematriz = self.comboMatrices.get()
-        self.giroHorizontal(namematriz)
+        if self.operacionSeleccionada =='horizontal':
+            self.limpiarFramesMatrices()
+            namematriz = self.comboMatrices.get()
+            self.giroHorizontal(namematriz)
+        if self.operacionSeleccionada == 'vertical':
+            self.limpiarFramesMatrices()
+            namematriz = self.comboMatrices.get()
+            self.giroVertical(namematriz)
 
     def matrizSeleccionada(self, nombre):
         for a in range(self.matrices.tamanio):
@@ -102,33 +117,46 @@ class Interfaz():
         matrix = self.matrizSeleccionada(nombre)
         x = int(matrix.filas)
         y = int(matrix.columnas)
-        #IMPRESIÓN NORMAL
+        #IMPRESIÓN
         for a in range(x):
             for b in range(y):
+                #IMPRESIÓN NORMAL
                 celda = Entry(self.panelOriginal, width = 3)
                 celda.grid(padx = 5, pady = 5, row = a, column = b, columnspan = 1)
-
                 if matrix.retornarNodoEn(a+1, b+1) != None:
                     celda.insert(0,'*')
                     celda.configure({'background': "#454545"})
                     celda.config(justify = 'center', fg = 'white')
-        #IMPRESIÓN GIRADA
-        for a in range(x):
-            for b in range(y):                
-                if matrix.retornarNodoEn(a+1, b+1) != None:                    
-                    nuevacelda = Entry(self.panelResultado, width = 3)    
-                    #CAMBIANDO COORDENADAS
-                    newfila = x - (a+1)
+                #IMPRESIÓN GIRADA        
+                nuevacelda = Entry(self.panelResultado, width = 3)    
+                nuevacelda.grid(padx = 5, pady = 5, row = a, column = b, columnspan = 1)                
+                if matrix.retornarNodoEn(x-a, b+1) != None:
                     nuevacelda.insert(0,'*')
                     nuevacelda.configure({'background': "#454545"})
-                    nuevacelda.config(justify = 'center', fg = 'white')
-                    nuevacelda.grid(padx = 5, pady = 5, row = newfila, column = b, columnspan = 1)                
-                else:
-                    celda = Entry(self.panelResultado, width = 3)
-                    celda.grid(padx = 5, pady = 5, row = a, column = b, columnspan = 1)                
-                
-
-
+                    nuevacelda.config(justify = 'center', fg = 'white')        
+    
+    def giroVertical(self, nombre):        
+        matrix = self.matrizSeleccionada(nombre)
+        x = int(matrix.filas)
+        y = int(matrix.columnas)
+        #IMPRESIÓN
+        for a in range(x):
+            for b in range(y):
+                #IMPRESIÓN NORMAL
+                celda = Entry(self.panelOriginal, width = 3)
+                celda.grid(padx = 5, pady = 5, row = a, column = b, columnspan = 1)
+                if matrix.retornarNodoEn(a+1, b+1) != None:
+                    celda.insert(0,'*')
+                    celda.configure({'background': "#454545"})
+                    celda.config(justify = 'center', fg = 'white')
+                #IMPRESIÓN GIRADA        
+                nuevacelda = Entry(self.panelResultado, width = 3)    
+                nuevacelda.grid(padx = 5, pady = 5, row = a, column = b, columnspan = 1)                
+                if matrix.retornarNodoEn(a+1, y-b) != None:
+                    nuevacelda.insert(0,'*')
+                    nuevacelda.configure({'background': "#454545"})
+                    nuevacelda.config(justify = 'center', fg = 'white')        
+                                                 
     def abrirXML(self):
         archivo = filedialog.askopenfilename(initialdir = "/", title = "Seleccione el archivo XML: ", filetypes = (("archivos XML", "*.xml"),("all files","*.*")))        
         mixml = minidom.parse(archivo)        
@@ -163,7 +191,19 @@ class Interfaz():
 
             
             self.matrices.insertar(nuevaMatriz)
+        self.titulo.configure(text = 'Eliga una operación para las matrices')
+        self.titulo.config(font = ('Verdana', 18))
         self.matrices.mostrarNodos()
         self.matrices.retornarEn(1).recorrerFilas()
+    
+    def limpiarFramesMatrices(self):
+        try:
+            for child in self.panelOriginal.winfo_children():
+                child.destroy()
+
+            for child in self.panelResultado.winfo_children():
+                child.destroy()
+        except: 
+            print('Excepción controlada')
 
 ventana = Interfaz()
