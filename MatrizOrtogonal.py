@@ -141,6 +141,17 @@ class Matriz(object):
             encabezadoFila = encabezadoFila.siguiente
         print('Fin filas')
     
+    #Retornar nodo por coordenada
+    def retornarNodoEn(self, fila, columna):
+        encabezadoFila = self.eFilas.inicio
+        while(encabezadoFila != None):
+            temporal = encabezadoFila.acceso
+            while temporal != None:
+                if temporal.fila == fila and temporal.columna == columna:
+                    return temporal
+                temporal = temporal.derecha
+            encabezadoFila = encabezadoFila.siguiente
+
     # metodo recorrer columnas  
     def recorrerColumnas(self):
         encabezadoColumna = self.eColumnas.inicio
