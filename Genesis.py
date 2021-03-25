@@ -21,12 +21,12 @@ class Interfaz():
         self.operacionesMatriz = Menu(self.menubar, tearoff=0)
         self.operacionesMatriz.add_command(label="Giro horizontal", command = lambda: self.botonApachado(1))
         self.operacionesMatriz.add_command(label="Giro vertical", command = lambda: self.botonApachado(2))
-        self.operacionesMatriz.add_command(label="Transpuesta")
-        self.operacionesMatriz.add_command(label="Limpiar zona")
-        self.operacionesMatriz.add_command(label="Agregar linea horizontal")
-        self.operacionesMatriz.add_command(label="Agregar linea vertical")
-        self.operacionesMatriz.add_command(label="Agregar rectangulo")
-        self.operacionesMatriz.add_command(label="Agregar triangulo rectangulo")
+        self.operacionesMatriz.add_command(label="Transpuesta", command = lambda: self.botonApachado(3))
+        self.operacionesMatriz.add_command(label="Limpiar zona", command = lambda: self.botonApachado(4))
+        self.operacionesMatriz.add_command(label="Agregar linea horizontal", command = lambda: self.botonApachado(5))
+        self.operacionesMatriz.add_command(label="Agregar linea vertical", command = lambda: self.botonApachado(6))
+        self.operacionesMatriz.add_command(label="Agregar rectangulo", command = lambda: self.botonApachado(7))
+        self.operacionesMatriz.add_command(label="Agregar triangulo rectangulo", command = lambda: self.botonApachado(8))
         self.operacionesMatriz.add_separator()        
         self.operacionesMatriz.add_command(label="Unión A, B")
         self.operacionesMatriz.add_command(label="Inersección A, B")
@@ -47,7 +47,7 @@ class Interfaz():
         self.menubar.add_cascade(label="Ayuda", menu=self.helpmenu)
 
         self.titulo = Label(self.root, text = 'Bienvenido, para empezar cargue un archivo XML')        
-        self.titulo.grid(row =0, sticky = (N, S, E, W))
+        self.titulo.grid(row =0, sticky = (N, S, E, W), columnspan = 3)
         self.titulo.config(font = ('Verdana', 18))
         #FRAME BOTONES
         self.panelBotones = Frame(self.root, borderwidth = 2, relief = 'raised')        
@@ -62,13 +62,14 @@ class Interfaz():
         self.panelResultado = Frame(self.root, borderwidth = 2, relief = 'raised', bg="gold")        
 
         # Finalmente bucle de la aplicación
-        self.root.geometry('1100x590')
+        #self.root.geometry('1100x590')
         #self.root.resizable(False,False)
         self.root.mainloop()
     
     def inicializarWidgets(self):
+        self.limpiarBotones()
         #AGREGO LOS FRAMES        
-        self.panelBotones.grid(row = 1, padx = 5,pady = 5, sticky = (N, S, E, W))        
+        self.panelBotones.grid(columnspan = 2, row = 1, padx = 5,pady = 5, sticky = (N, S, E, W))        
         self.panelOriginal.grid(row = 2, column = 0, padx = 5, pady = 5, sticky = (N, S, E, W))
         self.panelResultado.grid(row = 2, column = 1, padx = 5, pady = 5, sticky = (N, S, E, W))
         #AGREGO LOS COMOPONENTES NECESARIOS
@@ -80,22 +81,137 @@ class Interfaz():
         self.comboMatrices = ttk.Combobox(self.panelBotones, values = listaMatrices)
         self.comboMatrices.set(listaMatrices[0])
         self.comboMatrices.grid(padx = 5, row = 0, column = 1)
-        self.imprimir = Button(self.panelBotones, text = 'Imprimir', command = lambda: self.Imprimir())
+        self.imprimir = Button(self.panelBotones, text = 'Imprimir', command = lambda: self.Imprimir(), bg = 'salmon')
         self.imprimir.grid(padx=5, row = 0, column = 2)
+
+    def widgetsLineas(self):
+        self.labelFila = Label(self.panelBotones, text = 'En fila:')
+        self.labelFila.grid(padx= 5, row = 0, column = 2)
+        self.filaEntry = Entry(self.panelBotones, width = 2)
+        self.filaEntry.grid(padx = 3, row =0, column =3 )
+        self.labelColumna = Label(self.panelBotones, text = 'En columna:')
+        self.labelColumna.grid(padx= 5, row = 0, column = 4)
+        self.columnaEntry = Entry(self.panelBotones, width = 2)
+        self.columnaEntry.grid(padx = 3, row =0, column =5 )
+        self.labelCa = Label(self.panelBotones, text = 'Cantidad:')
+        self.labelCa.grid(padx= 5, row = 0, column = 6)
+        self.cantidadEntry = Entry(self.panelBotones, width = 2)
+        self.cantidadEntry.grid(padx = 3, row =0, column =7 )
+        self.imprimir = Button(self.panelBotones, text = 'Imprimir', command = lambda: self.Imprimir(), bg = 'salmon')
+        self.imprimir.grid(padx=5, row = 0, column = 8)
+
+    def inicializarWidgets2(self):
+        self.limpiarBotones()
+        #AGREGO LOS FRAMES        
+        self.panelBotones.grid(columnspan = 3, row = 1, padx = 5,pady = 5, sticky = (N, S, E, W))        
+        self.panelOriginal.grid(row = 2, column = 0, padx = 5, pady = 5, sticky = (N, S, E, W))
+        self.panelResultado.grid(row = 2, column = 1, padx = 5, pady = 5, sticky = (N, S, E, W))
+        #AGREGO LOS COMOPONENTES NECESARIOS        
+        self.indicador = Label(self.panelBotones, text = 'Seleccione una matriz')
+        self.indicador.grid(padx = 5,row = 0, column = 0)
+        listaMatrices = []
+        for a in range(self.matrices.tamanio):
+            listaMatrices.append(str(self.matrices.retornarEn(a+1).nombre))
+        self.comboMatrices = ttk.Combobox(self.panelBotones, values = listaMatrices)
+        self.comboMatrices.set(listaMatrices[0])
+        self.comboMatrices.grid(padx = 5, row = 0, column = 1)
+        #WIDGETS VARIADOS
+        if self.operacionSeleccionada == 'area':            
+            self.coordenanda1 = Label(self.panelBotones, text = 'Coordenada inicial:')
+            self.coordenanda1.grid(padx= 5, row = 0, column = 2)
+            self.x1 = Entry(self.panelBotones, width = 2)
+            self.x1.grid(padx = 3, row =0, column =3 )
+            self.y1 = Entry(self.panelBotones, width = 2)
+            self.y1.grid(padx = 5, row =0, column =4 )
+
+            self.coordenanda2 = Label(self.panelBotones, text = 'Coordenada final:')
+            self.coordenanda2.grid(padx= 5, row = 0, column = 5)
+            self.x2 = Entry(self.panelBotones, width = 2)
+            self.x2.grid(padx = 3, row =0, column =6 )
+            self.y1 = Entry(self.panelBotones, width = 2)
+            self.y1.grid(padx = 5, row =0, column =7 )            
+
+            self.imprimir = Button(self.panelBotones, text = 'Imprimir', command = lambda: self.Imprimir(), bg = 'salmon')
+            self.imprimir.grid(padx=5, row = 0, column = 8)
+        if self.operacionSeleccionada == 'lineah':
+            self.widgetsLineas()
+        if self.operacionSeleccionada == 'lineav':
+            self.widgetsLineas()
+        if self.operacionSeleccionada == 'addrectangulo':
+            self.coordenanda1 = Label(self.panelBotones, text = 'Coordenada inicial:')
+            self.coordenanda1.grid(padx= 5, row = 0, column = 2)
+            self.x1 = Entry(self.panelBotones, width = 2)
+            self.x1.grid(padx = 3, row =0, column =3 )
+            self.y1 = Entry(self.panelBotones, width = 2)
+            self.y1.grid(padx = 5, row =0, column =4 )
+            self.labelalto = Label(self.panelBotones, text = 'Alto:')
+            self.labelalto.grid(padx= 5, row = 0, column = 5)
+            self.altroentry = Entry(self.panelBotones, width = 2)
+            self.altroentry.grid(padx = 3, row =0, column =6 )
+            self.labelancho = Label(self.panelBotones, text = 'Ancho:')
+            self.labelancho.grid(padx= 5, row = 0, column = 7)
+            self.anchoentry = Entry(self.panelBotones, width = 2)
+            self.anchoentry.grid(padx = 3, row =0, column =8 )
+            self.imprimir = Button(self.panelBotones, text = 'Imprimir', command = lambda: self.Imprimir(), bg = 'salmon')
+            self.imprimir.grid(padx=5, row = 0, column = 9)
+        if self.operacionSeleccionada == 'addtriangulo':
+            self.coordenanda1 = Label(self.panelBotones, text = 'Coordenada inicial:')
+            self.coordenanda1.grid(padx= 5, row = 0, column = 2)
+            self.x1 = Entry(self.panelBotones, width = 2)
+            self.x1.grid(padx = 3, row =0, column =3 )
+            self.y1 = Entry(self.panelBotones, width = 2)
+            self.y1.grid(padx = 5, row =0, column =4 )
+            self.filascolumnas = Label(self.panelBotones, text = 'Filas x Columnas:')
+            self.filascolumnas.grid(padx= 5, row = 0, column = 5)
+            self.dantoentry = Entry(self.panelBotones, width = 2)
+            self.dantoentry.grid(padx = 3, row =0, column =6 )
+            self.imprimir = Button(self.panelBotones, text = 'Imprimir', command = lambda: self.Imprimir(), bg = 'salmon')
+            self.imprimir.grid(padx=5, row = 0, column = 7)
+
+
 
     def botonApachado(self, valor):
         if valor == 1:
             self.limpiarFramesMatrices()
-            self.titulo.configure(text = 'Giro horizontal')
-            self.titulo.config(font = ('Verdana', 18))
+            self.titulo.configure(text = 'Giro horizontal de una imagen',)            
             self.inicializarWidgets()
             self.operacionSeleccionada = 'horizontal'
         if valor == 2:
             self.limpiarFramesMatrices()
-            self.titulo.configure(text = 'Giro vertical')
-            self.titulo.config(font = ('Verdana', 18))
+            self.titulo.configure(text = 'Giro vertical de una imagen')
             self.inicializarWidgets()
             self.operacionSeleccionada = 'vertical'
+        if valor == 3:
+            self.limpiarFramesMatrices()
+            self.titulo.configure(text = 'Transpuesta de una imagen')
+            self.inicializarWidgets()
+            self.operacionSeleccionada = 'transpuesta'
+        if valor == 4:
+            self.limpiarFramesMatrices()
+            self.titulo.configure(text = 'Limpiar zona de una imagen')
+            self.operacionSeleccionada = 'area'
+            self.inicializarWidgets2()
+        if valor == 5:
+            self.limpiarFramesMatrices()
+            self.titulo.configure(text = 'Linea horizontal en una imagen')
+            self.operacionSeleccionada = 'lineah'
+            self.inicializarWidgets2()
+        if valor == 6:
+            self.limpiarFramesMatrices()
+            self.titulo.configure(text = 'Linea vertical en una imagen')
+            self.operacionSeleccionada = 'lineav'
+            self.inicializarWidgets2()
+        if valor == 7:
+            self.limpiarBotones()
+            self.titulo.configure(text= 'Agregar rectangulo a una imagen')
+            self.operacionSeleccionada = 'addrectangulo'
+            self.inicializarWidgets2()
+        if valor == 8:            
+            self.limpiarBotones()
+            self.titulo.configure(text= 'Agregar triangulo rectangulo')
+            self.operacionSeleccionada = 'addtriangulo'
+            self.inicializarWidgets2()
+            
             
     
     def Imprimir(self):
@@ -107,6 +223,14 @@ class Interfaz():
             self.limpiarFramesMatrices()
             namematriz = self.comboMatrices.get()
             self.giroVertical(namematriz)
+        if self.operacionSeleccionada == 'transpuesta':
+            self.limpiarFramesMatrices()
+            namematriz = self.comboMatrices.get()
+            self.Transpuesta(namematriz)
+        if self.operacionSeleccionada == 'area':
+            self.limpiarFramesMatrices()
+            namematriz = self.comboMatrices.get()
+
 
     def matrizSeleccionada(self, nombre):
         for a in range(self.matrices.tamanio):
@@ -156,6 +280,28 @@ class Interfaz():
                     nuevacelda.insert(0,'*')
                     nuevacelda.configure({'background': "#454545"})
                     nuevacelda.config(justify = 'center', fg = 'white')        
+    
+    def Transpuesta(self, nombre):        
+        matrix = self.matrizSeleccionada(nombre)
+        x = int(matrix.filas)
+        y = int(matrix.columnas)
+        #IMPRESIÓN
+        for a in range(x):
+            for b in range(y):
+                #IMPRESIÓN NORMAL
+                celda = Entry(self.panelOriginal, width = 3)
+                celda.grid(padx = 5, pady = 5, row = a, column = b, columnspan = 1)
+                if matrix.retornarNodoEn(a+1, b+1) != None:
+                    celda.insert(0,'*')
+                    celda.configure({'background': "#454545"})
+                    celda.config(justify = 'center', fg = 'white')
+                #IMPRESIÓN GIRADA        
+                nuevacelda = Entry(self.panelResultado, width = 3)    
+                nuevacelda.grid(padx = 5, pady = 5, row = a, column = b, columnspan = 1)                
+                if matrix.retornarNodoEn(b+1, a+1) != None:
+                    nuevacelda.insert(0,'*')
+                    nuevacelda.configure({'background': "#454545"})
+                    nuevacelda.config(justify = 'center', fg = 'white')        
                                                  
     def abrirXML(self):
         archivo = filedialog.askopenfilename(initialdir = "/", title = "Seleccione el archivo XML: ", filetypes = (("archivos XML", "*.xml"),("all files","*.*")))        
@@ -192,7 +338,6 @@ class Interfaz():
             
             self.matrices.insertar(nuevaMatriz)
         self.titulo.configure(text = 'Eliga una operación para las matrices')
-        self.titulo.config(font = ('Verdana', 18))
         self.matrices.mostrarNodos()
         self.matrices.retornarEn(1).recorrerFilas()
     
@@ -205,5 +350,13 @@ class Interfaz():
                 child.destroy()
         except: 
             print('Excepción controlada')
+    
+    def limpiarBotones(self):
+        try:
+            for child in self.panelBotones.winfo_children():
+                child.destroy()
+        except: 
+            print('Excepción controlada')
+
 
 ventana = Interfaz()
