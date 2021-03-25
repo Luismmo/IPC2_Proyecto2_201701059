@@ -69,19 +69,19 @@ class Matriz(object):
         self.nombre = nombre
         self.filas = filas
         self.columnas = columnas
-        self.eFilas = ListaEncabazado()
-        self.eColumnas = ListaEncabazado()
+        self.encabezadoFilas = ListaEncabazado()
+        self.encabezadoColumnas = ListaEncabazado()
         self.siguiente = None
 
     # metodo insertar
     def insertar(self, dato, fila, columna):
         nuevo = Nodo(dato,fila,columna)
         #INSERCIÓN DE FILAS
-        encabezadoFila = self.eFilas.retornarEn(fila)
+        encabezadoFila = self.encabezadoFilas.retornarEn(fila)
         if encabezadoFila == None: #INSERCION SI NO EXISTE NINGUN ENCABEZADO
             encabezadoFila = Encabezado(fila)
             encabezadoFila.acceso = nuevo
-            self.eFilas.insertar(encabezadoFila)            
+            self.encabezadoFilas.insertar(encabezadoFila)            
         else: 
             #INSERTAR AL INICIO 
             if int(nuevo.columna) < int(encabezadoFila.acceso.columna):
@@ -103,10 +103,10 @@ class Matriz(object):
                     temporal.derecha = nuevo
                     nuevo.izquierda = temporal
         #INSERCIÓN DE COLUMNAS
-        encabezadoColumna = self.eColumnas.retornarEn(columna)
+        encabezadoColumna = self.encabezadoColumnas.retornarEn(columna)
         if encabezadoColumna == None: # SI NO EXISTE ENCABEZADO SE CREA UNO
             encabezadoColumna = Encabezado(columna)
-            self.eColumnas.insertar(encabezadoColumna)
+            self.encabezadoColumnas.insertar(encabezadoColumna)
             encabezadoColumna.acceso = nuevo
         else: 
             if int(nuevo.fila) < int(encabezadoColumna.acceso.fila): #INSERTAR AL INICIO
@@ -128,7 +128,7 @@ class Matriz(object):
                     nuevo.arriba = temporal
     # metodo recorrer filas 
     def recorrerFilas(self):
-        encabezadoFila = self.eFilas.inicio
+        encabezadoFila = self.encabezadoFilas.inicio
         print('Recorrido por filas')
         while(encabezadoFila != None):
             print('Fila '+str(encabezadoFila.numero))
@@ -141,9 +141,20 @@ class Matriz(object):
             encabezadoFila = encabezadoFila.siguiente
         print('Fin filas')
     
+    #Retornar nodo por coordenada
+    def retornarNodoEn(self, fila, columna):
+        encabezadoFila = self.encabezadoFilas.inicio
+        while(encabezadoFila != None):
+            temporal = encabezadoFila.acceso
+            while temporal != None:
+                if temporal.fila == fila and temporal.columna == columna:
+                    return temporal
+                temporal = temporal.derecha
+            encabezadoFila = encabezadoFila.siguiente
+
     # metodo recorrer columnas  
     def recorrerColumnas(self):
-        encabezadoColumna = self.eColumnas.inicio
+        encabezadoColumna = self.encabezadoColumnas.inicio
         print('Recorrido por columnas')
         while encabezadoColumna != None:
             temporal = encabezadoColumna.acceso

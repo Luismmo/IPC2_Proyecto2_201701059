@@ -1,0 +1,34 @@
+<matrices>
+	<matriz>
+		<nombre> Matrizprueba</nombre>
+			<filas> 10</filas>
+			<columnas>10</columnas>
+			<imagen>
+				----------
+				-***-***--
+				--*--***--
+				--*--*----
+				-***-*----
+				----------
+				-***-***--
+				-*-----*--
+				-***-***--
+				----------
+			</imagen>
+	</matriz>
+	<matriz>
+		<nombre> Matrizprueba2</nombre>
+			<filas>8</filas>
+			<columnas>8</columnas>
+			<imagen>
+				--------
+				-*-*-*-*
+				--*---*-
+				-*-*--*-
+				--------
+				-***--*-
+				--*--*-*
+				-***--*-
+			</imagen>
+	</matriz>
+</matrices>
