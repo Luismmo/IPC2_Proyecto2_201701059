@@ -1,3 +1,4 @@
+import tkinter as tk
 from tkinter import *
 from tkinter import filedialog, ttk, font
 import os
@@ -128,8 +129,8 @@ class Interfaz():
             self.coordenanda2.grid(padx= 5, row = 0, column = 5)
             self.x2 = Entry(self.panelBotones, width = 2)
             self.x2.grid(padx = 3, row =0, column =6 )
-            self.y1 = Entry(self.panelBotones, width = 2)
-            self.y1.grid(padx = 5, row =0, column =7 )            
+            self.y2 = Entry(self.panelBotones, width = 2)
+            self.y2.grid(padx = 5, row =0, column =7 )            
 
             self.imprimir = Button(self.panelBotones, text = 'Imprimir', command = lambda: self.Imprimir(), bg = 'salmon')
             self.imprimir.grid(padx=5, row = 0, column = 8)
@@ -230,6 +231,7 @@ class Interfaz():
         if self.operacionSeleccionada == 'area':
             self.limpiarFramesMatrices()
             namematriz = self.comboMatrices.get()
+            self.LimpiarZona(namematriz,int(self.x1.get()), int(self.y1.get()),int(self.x2.get()), int(self.y2.get()))
 
 
     def matrizSeleccionada(self, nombre):
@@ -301,7 +303,38 @@ class Interfaz():
                 if matrix.retornarNodoEn(b+1, a+1) != None:
                     nuevacelda.insert(0,'*')
                     nuevacelda.configure({'background': "#454545"})
-                    nuevacelda.config(justify = 'center', fg = 'white')        
+                    nuevacelda.config(justify = 'center', fg = 'white')
+    
+    def LimpiarZona(self, nombre, x1,y1,x2,y2):    
+        #print(str(x1)+","+str(y1)+"  "+str(x2)+","+str(y2))    
+        matrix = self.matrizSeleccionada(nombre)
+        x = int(matrix.filas)
+        y = int(matrix.columnas)
+        #IMPRESIÓN
+        for a in range(x):
+            for b in range(y):
+                #IMPRESIÓN NORMAL
+                celda = Entry(self.panelOriginal, width = 3)
+                celda.grid(padx = 5, pady = 5, row = a, column = b, columnspan = 1)
+                if matrix.retornarNodoEn(a+1, b+1) != None:
+                    celda.insert(0,'*')
+                    celda.configure({'background': "#454545"})
+                    celda.config(justify = 'center', fg = 'white')
+                
+                #IMPRESIÓN ZONA LIMPIA 
+                nuevacelda = Entry(self.panelResultado, width = 3)    
+                nuevacelda.grid(padx = 5, pady = 5, row = a, column = b, columnspan = 1)                
+                
+                if matrix.retornarNodoEn(a+1, b+1) != None:
+                    nuevacelda.insert(0,'*')
+                    nuevacelda.configure({'background': "#454545"})
+                    nuevacelda.config(justify = 'center', fg = 'white')
+                    if (a>=(x1-1) and a<=(x2-1)) and (b>=(y1-1) and b<=(y2-1)):
+                        nuevacelda.configure({'backgroun':'MediumPurple1'})
+                        nuevacelda.delete(0, tk.END)
+                if (a>=(x1-1) and a<=(x2-1)) and (b>=(y1-1) and b<=(y2-1)):
+                    nuevacelda.configure({'backgroun':'MediumPurple1'})
+                    nuevacelda.delete(0, tk.END)
                                                  
     def abrirXML(self):
         archivo = filedialog.askopenfilename(initialdir = "/", title = "Seleccione el archivo XML: ", filetypes = (("archivos XML", "*.xml"),("all files","*.*")))        
