@@ -232,6 +232,17 @@ class Interfaz():
             self.limpiarFramesMatrices()
             namematriz = self.comboMatrices.get()
             self.LimpiarZona(namematriz,int(self.x1.get()), int(self.y1.get()),int(self.x2.get()), int(self.y2.get()))
+        if self.operacionSeleccionada == 'lineah':
+            self.limpiarFramesMatrices()
+            namematriz = self.comboMatrices.get()
+            self.LimpiarZona(namematriz,int(self.filaEntry.get()), int(self.columnaEntry.get()),int(self.filaEntry.get()), int(self.columnaEntry.get())+int(self.cantidadEntry.get())-1)
+            #self.addLineaHorizontal(namematriz,int(self.filaEntry.get()), int(self.columnaEntry.get()), int(self.cantidadEntry.get()))
+        if self.operacionSeleccionada == 'lineav':
+            self.limpiarFramesMatrices()
+            namematriz = self.comboMatrices.get()
+            self.LimpiarZona(namematriz,int(self.filaEntry.get()), int(self.columnaEntry.get()),int(self.filaEntry.get())+int(self.cantidadEntry.get())-1, int(self.columnaEntry.get()))
+            #self.addLineaVertical(namematriz,int(self.filaEntry.get()), int(self.columnaEntry.get()), int(self.cantidadEntry.get()))
+
 
 
     def matrizSeleccionada(self, nombre):
@@ -334,9 +345,9 @@ class Interfaz():
                         nuevacelda.delete(0, tk.END)
                 if (a>=(x1-1) and a<=(x2-1)) and (b>=(y1-1) and b<=(y2-1)):
                     nuevacelda.configure({'backgroun':'MediumPurple1'})
-                    nuevacelda.delete(0, tk.END)
-                                                 
-    def abrirXML(self):
+                    nuevacelda.delete(0, tk.END)        
+
+    def abrirXML(self):        
         archivo = filedialog.askopenfilename(initialdir = "/", title = "Seleccione el archivo XML: ", filetypes = (("archivos XML", "*.xml"),("all files","*.*")))        
         mixml = minidom.parse(archivo)        
         nombres = mixml.getElementsByTagName('matriz')
