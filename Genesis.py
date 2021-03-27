@@ -147,8 +147,8 @@ class Interfaz():
             self.y1.grid(padx = 5, row =0, column =4 )
             self.labelalto = Label(self.panelBotones, text = 'Alto:')
             self.labelalto.grid(padx= 5, row = 0, column = 5)
-            self.altroentry = Entry(self.panelBotones, width = 2)
-            self.altroentry.grid(padx = 3, row =0, column =6 )
+            self.altoentry = Entry(self.panelBotones, width = 2)
+            self.altoentry.grid(padx = 3, row =0, column =6 )
             self.labelancho = Label(self.panelBotones, text = 'Ancho:')
             self.labelancho.grid(padx= 5, row = 0, column = 7)
             self.anchoentry = Entry(self.panelBotones, width = 2)
@@ -242,6 +242,10 @@ class Interfaz():
             namematriz = self.comboMatrices.get()
             self.LimpiarZona(namematriz,int(self.filaEntry.get()), int(self.columnaEntry.get()),int(self.filaEntry.get())+int(self.cantidadEntry.get())-1, int(self.columnaEntry.get()))
             #self.addLineaVertical(namematriz,int(self.filaEntry.get()), int(self.columnaEntry.get()), int(self.cantidadEntry.get()))
+        if self.operacionSeleccionada =='addrectangulo':
+            self.limpiarFramesMatrices()
+            namematriz = self.comboMatrices.get()            
+            self.dibujarRectangulo(namematriz,int(self.x1.get()), int(self.y1.get()), int(self.x1.get()) + int(self.altoentry.get())-1, int(self.y1.get()) + int(self.anchoentry.get())-1)
 
 
 
@@ -341,11 +345,59 @@ class Interfaz():
                     nuevacelda.configure({'background': "#454545"})
                     nuevacelda.config(justify = 'center', fg = 'white')
                     if (a>=(x1-1) and a<=(x2-1)) and (b>=(y1-1) and b<=(y2-1)):
-                        nuevacelda.configure({'backgroun':'MediumPurple1'})
+                        nuevacelda.configure({'backgroun':'gray50'})
                         nuevacelda.delete(0, tk.END)
                 if (a>=(x1-1) and a<=(x2-1)) and (b>=(y1-1) and b<=(y2-1)):
-                    nuevacelda.configure({'backgroun':'MediumPurple1'})
-                    nuevacelda.delete(0, tk.END)        
+                    nuevacelda.configure({'backgroun':'gray50'})
+                    nuevacelda.delete(0, tk.END)
+
+    def dibujarRectangulo(self, nombre, x1,y1,x2,y2):            
+        matrix = self.matrizSeleccionada(nombre)
+        x = int(matrix.filas)
+        y = int(matrix.columnas)
+        #IMPRESIÓN
+        for a in range(x):
+            for b in range(y):
+                #IMPRESIÓN NORMAL
+                celda = Entry(self.panelOriginal, width = 3)
+                celda.grid(padx = 5, pady = 5, row = a, column = b, columnspan = 1)
+                if matrix.retornarNodoEn(a+1, b+1) != None:
+                    celda.insert(0,'*')
+                    celda.configure({'background': "#454545"})
+                    celda.config(justify = 'center', fg = 'white')
+                
+                #IMPRESIÓN DEL RECTANGULO
+                nuevacelda = Entry(self.panelResultado, width = 3)    
+                nuevacelda.grid(padx = 5, pady = 5, row = a, column = b, columnspan = 1)                
+                
+                if matrix.retornarNodoEn(a+1, b+1) != None:
+                    nuevacelda.insert(0,'*')
+                    nuevacelda.configure({'background': "#454545"})
+                    nuevacelda.config(justify = 'center', fg = 'white')
+                    if (a==(x1-1)) and (b>=(y1-1) and b<=(y2-1)):
+                        nuevacelda.configure({'backgroun':'gray50'})
+                        nuevacelda.delete(0, tk.END)
+                    if (a==(x2-1)) and (b>=(y1-1) and b<=(y2-1)):
+                        nuevacelda.configure({'backgroun':'gray50'})
+                        nuevacelda.delete(0, tk.END)
+                    if (a>=(x1-1) and a<=(x2-1)) and (b==(y1-1)):
+                        nuevacelda.configure({'backgroun':'gray50'})
+                        nuevacelda.delete(0, tk.END)
+                    if (a>=(x1-1) and a<=(x2-1)) and (b==(y2-1)):
+                        nuevacelda.configure({'backgroun':'gray50'})
+                        nuevacelda.delete(0, tk.END)
+                if (a==(x1-1)) and (b>=(y1-1) and b<=(y2-1)):
+                        nuevacelda.configure({'backgroun':'gray50'})
+                        nuevacelda.delete(0, tk.END)
+                if (a==(x2-1)) and (b>=(y1-1) and b<=(y2-1)):
+                    nuevacelda.configure({'backgroun':'gray50'})
+                    nuevacelda.delete(0, tk.END)
+                if (a>=(x1-1) and a<=(x2-1)) and (b==(y1-1)):
+                    nuevacelda.configure({'backgroun':'gray50'})
+                    nuevacelda.delete(0, tk.END)
+                if (a>=(x1-1) and a<=(x2-1)) and (b==(y2-1)):
+                    nuevacelda.configure({'backgroun':'gray50'})
+                    nuevacelda.delete(0, tk.END)
 
     def abrirXML(self):        
         archivo = filedialog.askopenfilename(initialdir = "/", title = "Seleccione el archivo XML: ", filetypes = (("archivos XML", "*.xml"),("all files","*.*")))        
