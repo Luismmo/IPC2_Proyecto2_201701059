@@ -29,10 +29,10 @@ class Interfaz():
         self.operacionesMatriz.add_command(label="Agregar rectangulo", command = lambda: self.botonApachado(7))
         self.operacionesMatriz.add_command(label="Agregar triangulo rectangulo", command = lambda: self.botonApachado(8))
         self.operacionesMatriz.add_separator()        
-        self.operacionesMatriz.add_command(label="Unión A, B")
-        self.operacionesMatriz.add_command(label="Inersección A, B")
-        self.operacionesMatriz.add_command(label="Diferencia A, B")
-        self.operacionesMatriz.add_command(label="Diferencia simétrica A, B")
+        self.operacionesMatriz.add_command(label="Unión A, B", command = lambda: self.botonApachado(9))
+        self.operacionesMatriz.add_command(label="Inersección A, B", command = lambda: self.botonApachado(10))
+        self.operacionesMatriz.add_command(label="Diferencia A, B", command = lambda: self.botonApachado(11))
+        self.operacionesMatriz.add_command(label="Diferencia simétrica A, B", command = lambda: self.botonApachado(12))
 
         self.reportemenu = Menu(self.menubar, tearoff = 0)
         self.reportemenu.add_command(label = "Desplegar HTML")
@@ -67,6 +67,34 @@ class Interfaz():
         #self.root.resizable(False,False)
         self.root.mainloop()
     
+    def widgets2MatricesOperacion(self):
+        #LIMPIO LOS FRAMES
+        self.limpiarBotones()
+        self.limpiarFramesMatrices()
+        #AGREGO LOS CUATRO FRAMES
+        self.panelBotones.grid(columnspan = 2, row = 1, padx = 5,pady = 5, sticky = (N, S, E, W))        
+        self.panelOriginal.grid(row = 2, column = 0, padx = 5, pady = 5, sticky = (N, S, E, W))
+        self.panelOriginal2.grid(row = 2, column = 1, padx = 5, pady = 5, sticky = (N, S, E, W))
+        self.panelResultado.grid(row = 2, column = 2, padx = 5, pady = 5, sticky = (N, S, E, W))
+        #AGREGO LOS COMPONENTES NECESARIOS
+        self.indicador = Label(self.panelBotones, text = 'Seleccione una matriz')
+        self.indicador.grid(padx = 5,row = 0, column = 0)
+        listaMatrices = []
+        for a in range(self.matrices.tamanio):
+            listaMatrices.append(str(self.matrices.retornarEn(a+1).nombre))
+        self.comboMatrices = ttk.Combobox(self.panelBotones, values = listaMatrices)
+        self.comboMatrices.set(listaMatrices[0])
+        self.comboMatrices.grid(padx = 5, row = 0, column = 1)
+
+        self.indicador2 = Label(self.panelBotones, text = 'Seleccione otra matriz')
+        self.indicador2.grid(padx = 5,row = 0, column = 2)
+        self.comboMatrices2 = ttk.Combobox(self.panelBotones, values = listaMatrices)
+        self.comboMatrices2.set(listaMatrices[1])
+        self.comboMatrices2.grid(padx = 5, row = 0, column = 3)
+        self.imprimir = Button(self.panelBotones, text = 'Imprimir', command = lambda: self.Imprimir(), bg = 'salmon')
+        self.imprimir.grid(padx=5, row = 0, column = 4)
+
+
     def inicializarWidgets(self):
         self.limpiarBotones()
         #AGREGO LOS FRAMES        
@@ -173,48 +201,78 @@ class Interfaz():
 
     def botonApachado(self, valor):
         if valor == 1:
+            self.limpiarBotones()
             self.limpiarFramesMatrices()
             self.titulo.configure(text = 'Giro horizontal de una imagen',)            
             self.inicializarWidgets()
             self.operacionSeleccionada = 'horizontal'
         if valor == 2:
+            self.limpiarBotones()
             self.limpiarFramesMatrices()
             self.titulo.configure(text = 'Giro vertical de una imagen')
             self.inicializarWidgets()
             self.operacionSeleccionada = 'vertical'
         if valor == 3:
+            self.limpiarBotones()
             self.limpiarFramesMatrices()
             self.titulo.configure(text = 'Transpuesta de una imagen')
             self.inicializarWidgets()
             self.operacionSeleccionada = 'transpuesta'
         if valor == 4:
+            self.limpiarBotones()
             self.limpiarFramesMatrices()
             self.titulo.configure(text = 'Limpiar zona de una imagen')
             self.operacionSeleccionada = 'area'
             self.inicializarWidgets2()
         if valor == 5:
+            self.limpiarBotones()
             self.limpiarFramesMatrices()
             self.titulo.configure(text = 'Linea horizontal en una imagen')
             self.operacionSeleccionada = 'lineah'
             self.inicializarWidgets2()
         if valor == 6:
+            self.limpiarBotones()
             self.limpiarFramesMatrices()
             self.titulo.configure(text = 'Linea vertical en una imagen')
             self.operacionSeleccionada = 'lineav'
             self.inicializarWidgets2()
         if valor == 7:
+            self.limpiarFramesMatrices()
             self.limpiarBotones()
             self.titulo.configure(text= 'Agregar rectangulo a una imagen')
             self.operacionSeleccionada = 'addrectangulo'
             self.inicializarWidgets2()
         if valor == 8:            
             self.limpiarBotones()
+            self.limpiarFramesMatrices()
             self.titulo.configure(text= 'Agregar triangulo rectangulo')
             self.operacionSeleccionada = 'addtriangulo'
             self.inicializarWidgets2()
-            
-            
-    
+        if valor == 9:        
+            self.limpiarBotones()
+            self.limpiarFramesMatrices()                
+            self.titulo.configure(text= 'Unión A, B')
+            self.operacionSeleccionada = 'unionab'
+            self.widgets2MatricesOperacion()
+        if valor == 10:     
+            self.limpiarBotones()
+            self.limpiarFramesMatrices()                   
+            self.titulo.configure(text= 'Intersección A, B')
+            self.operacionSeleccionada = 'interseccionab'
+            self.widgets2MatricesOperacion()
+        if valor == 11:
+            self.limpiarBotones()
+            self.limpiarFramesMatrices()
+            self.titulo.configure(text= 'Diferencia A, B')
+            self.operacionSeleccionada = 'diferenciaab'
+            self.widgets2MatricesOperacion()
+        if valor == 12:
+            self.limpiarBotones()
+            self.limpiarFramesMatrices()
+            self.titulo.configure(text= 'Diferencia simétrica A, B')
+            self.operacionSeleccionada = 'simetricaab'
+            self.widgets2MatricesOperacion()
+                
     def Imprimir(self):
         if self.operacionSeleccionada =='horizontal':
             self.limpiarFramesMatrices()
@@ -250,7 +308,11 @@ class Interfaz():
             self.limpiarFramesMatrices()
             namematriz = self.comboMatrices.get()            
             self.dibujarTriangulo(namematriz,int(self.x1.get()), int(self.y1.get()), int(self.x1.get()) + int(self.datoentry.get())-1, int(self.y1.get()) + int(self.datoentry.get())-1, int(self.datoentry.get()))
-
+        if self.operacionSeleccionada =='unionab':
+            self.limpiarFramesMatrices()
+            namematriz = self.comboMatrices.get()
+            namematriz2 = self.comboMatrices2.get()
+            self.unionAB(namematriz, namematriz2)
 
 
     def matrizSeleccionada(self, nombre):
@@ -349,11 +411,11 @@ class Interfaz():
                     nuevacelda.configure({'background': "#454545"})
                     nuevacelda.config(justify = 'center', fg = 'white')
                     if (a>=(x1-1) and a<=(x2-1)) and (b>=(y1-1) and b<=(y2-1)):
-                        nuevacelda.configure({'backgroun':'gray50'})
-                        nuevacelda.delete(0, tk.END)
+                        nuevacelda.configure({'backgroun':'purple1'})
+                        #nuevacelda.delete(0, tk.END)
                 if (a>=(x1-1) and a<=(x2-1)) and (b>=(y1-1) and b<=(y2-1)):
-                    nuevacelda.configure({'backgroun':'gray50'})
-                    nuevacelda.delete(0, tk.END)
+                    nuevacelda.configure({'backgroun':'purple1'})
+                    #nuevacelda.delete(0, tk.END)
 
     def dibujarRectangulo(self, nombre, x1,y1,x2,y2):            
         matrix = self.matrizSeleccionada(nombre)
@@ -379,29 +441,29 @@ class Interfaz():
                     nuevacelda.configure({'background': "#454545"})
                     nuevacelda.config(justify = 'center', fg = 'white')
                     if (a==(x1-1)) and (b>=(y1-1) and b<=(y2-1)):
-                        nuevacelda.configure({'backgroun':'gray50'})
-                        nuevacelda.delete(0, tk.END)
+                        nuevacelda.configure({'backgroun':'purple1'})
+                        #nuevacelda.delete(0, tk.END)
                     if (a==(x2-1)) and (b>=(y1-1) and b<=(y2-1)):
-                        nuevacelda.configure({'backgroun':'gray50'})
-                        nuevacelda.delete(0, tk.END)
+                        nuevacelda.configure({'backgroun':'purple1'})
+                        #nuevacelda.delete(0, tk.END)
                     if (a>=(x1-1) and a<=(x2-1)) and (b==(y1-1)):
-                        nuevacelda.configure({'backgroun':'gray50'})
-                        nuevacelda.delete(0, tk.END)
+                        nuevacelda.configure({'backgroun':'purple1'})
+                        #nuevacelda.delete(0, tk.END)
                     if (a>=(x1-1) and a<=(x2-1)) and (b==(y2-1)):
-                        nuevacelda.configure({'backgroun':'gray50'})
-                        nuevacelda.delete(0, tk.END)
+                        nuevacelda.configure({'backgroun':'purple1'})
+                        #nuevacelda.delete(0, tk.END)
                 if (a==(x1-1)) and (b>=(y1-1) and b<=(y2-1)):
-                        nuevacelda.configure({'backgroun':'gray50'})
-                        nuevacelda.delete(0, tk.END)
+                        nuevacelda.configure({'backgroun':'purple1'})
+                        #nuevacelda.delete(0, tk.END)
                 if (a==(x2-1)) and (b>=(y1-1) and b<=(y2-1)):
-                    nuevacelda.configure({'backgroun':'gray50'})
-                    nuevacelda.delete(0, tk.END)
+                    nuevacelda.configure({'backgroun':'purple1'})
+                    #nuevacelda.delete(0, tk.END)
                 if (a>=(x1-1) and a<=(x2-1)) and (b==(y1-1)):
-                    nuevacelda.configure({'backgroun':'gray50'})
-                    nuevacelda.delete(0, tk.END)
+                    nuevacelda.configure({'backgroun':'purple1'})
+                    #nuevacelda.delete(0, tk.END)
                 if (a>=(x1-1) and a<=(x2-1)) and (b==(y2-1)):
-                    nuevacelda.configure({'backgroun':'gray50'})
-                    nuevacelda.delete(0, tk.END)
+                    nuevacelda.configure({'backgroun':'purple1'})
+                    #nuevacelda.delete(0, tk.END)
     
     def dibujarTriangulo(self, nombre, x1, y1, x2, y2, cantidad):            
         matrix = self.matrizSeleccionada(nombre)
@@ -431,29 +493,72 @@ class Interfaz():
                     nuevacelda.configure({'background': "#454545"})
                     nuevacelda.config(justify = 'center', fg = 'white')
                     if (a==(x2-1)) and (b>=(y1-1) and b<=(y2-1)):
-                        nuevacelda.configure({'backgroun':'gray50'})
-                        nuevacelda.delete(0, tk.END)
+                        nuevacelda.configure({'backgroun':'purple1'})
+                        #nuevacelda.delete(0, tk.END)
                     if (a>=(x1-1) and a<=(x2-1)) and (b==(y1-1)):
-                        nuevacelda.configure({'backgroun':'gray50'})
-                        nuevacelda.delete(0, tk.END)                    
+                        nuevacelda.configure({'backgroun':'purple1'})
+                        #nuevacelda.delete(0, tk.END)                    
                     
                     if (a>=(x1-1) and a<=(x2-1)) and (nuevaColumna==b) and (nuevaFila==a) and (b>(y1-1) and b<(y2-1)):
-                        nuevacelda.configure({'backgroun':'gray50'})
-                        nuevacelda.delete(0, tk.END)              
+                        nuevacelda.configure({'backgroun':'purple1'})
+                        #nuevacelda.delete(0, tk.END)              
                         nuevaColumna+=1   
                         nuevaFila+=1       
                 
                 if (a==(x2-1)) and (b>=(y1-1) and b<=(y2-1)):
-                    nuevacelda.configure({'backgroun':'gray50'})
-                    nuevacelda.delete(0, tk.END)
+                    nuevacelda.configure({'backgroun':'purple1'})
+                    #nuevacelda.delete(0, tk.END)
                 if (a>=(x1-1) and a<=(x2-1)) and (b==(y1-1)):
-                    nuevacelda.configure({'backgroun':'gray50'})
-                    nuevacelda.delete(0, tk.END)                                
+                    nuevacelda.configure({'backgroun':'purple1'})
+                    #nuevacelda.delete(0, tk.END)                                
                 if (a>=(x1-1) and a<=(x2-1)) and (nuevaColumna==b) and (nuevaFila==a) and (b>(y1-1) and b<(y2-1)):
-                    nuevacelda.configure({'backgroun':'gray50'})
-                    nuevacelda.delete(0, tk.END)              
+                    nuevacelda.configure({'backgroun':'purple1'})
+                    #nuevacelda.delete(0, tk.END)              
                     nuevaColumna+=1      
                     nuevaFila+=1
+
+    def unionAB(self, nombre, nombre2):        
+        matrix = self.matrizSeleccionada(nombre)        
+        x = int(matrix.filas)
+        y = int(matrix.columnas)
+        matrix2 = self.matrizSeleccionada(nombre2)
+        xx = int(matrix2.filas)
+        yy = int(matrix2.columnas)
+        if x >= xx:
+            fila = x
+        else:
+            fila = xx
+        if y >= yy:
+            columna = y
+        else:
+            columna = yy
+        #IMPRESIÓN
+        for a in range(fila):
+            for b in range(columna):
+                if a < x and b < y:
+                    #IMPRESIÓN NORMAL MATRIZ 1
+                    celda = Entry(self.panelOriginal, width = 3)
+                    celda.grid(padx = 5, pady = 5, row = a, column = b, columnspan = 1)
+                    if matrix.retornarNodoEn(a+1, b+1) != None:
+                        celda.insert(0,'*')
+                        celda.configure({'background': "#454545"})
+                        celda.config(justify = 'center', fg = 'white')
+                if a < xx and b < yy:
+                    #IMPRESIÓN NORMAL MATRIZ 2
+                    celda2 = Entry(self.panelOriginal2, width = 3)
+                    celda2.grid(padx = 5, pady = 5, row = a, column = b, columnspan = 1)
+                    if matrix2.retornarNodoEn(a+1, b+1) != None:
+                        celda2.insert(0,'*')
+                        celda2.configure({'background': "#454545"})
+                        celda2.config(justify = 'center', fg = 'white')        
+                #IMPRESIÓN DE LA UNION
+                nuevaCelda = Entry(self.panelResultado, width = 3)
+                nuevaCelda.grid(padx = 5, pady = 5, row = a, column = b, columnspan = 1)
+                if matrix.retornarNodoEn(a+1, b+1) != None or matrix2.retornarNodoEn(a+1, b+1) != None:
+                    nuevaCelda.insert(0,'*')
+                    nuevaCelda.configure({'background': "#454545"})
+                    nuevaCelda.config(justify = 'center', fg = 'white')        
+
 
     def abrirXML(self):        
         archivo = filedialog.askopenfilename(initialdir = "/", title = "Seleccione el archivo XML: ", filetypes = (("archivos XML", "*.xml"),("all files","*.*")))        
@@ -496,6 +601,9 @@ class Interfaz():
     def limpiarFramesMatrices(self):
         try:
             for child in self.panelOriginal.winfo_children():
+                child.destroy()
+            
+            for child in self.panelOriginal2.winfo_children():
                 child.destroy()
 
             for child in self.panelResultado.winfo_children():
