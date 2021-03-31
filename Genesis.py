@@ -251,25 +251,25 @@ class Interfaz():
         if valor == 9:        
             self.limpiarBotones()
             self.limpiarFramesMatrices()                
-            self.titulo.configure(text= 'Unión A, B')
+            self.titulo.configure(text= 'Unión entre A y B')
             self.operacionSeleccionada = 'unionab'
             self.widgets2MatricesOperacion()
         if valor == 10:     
             self.limpiarBotones()
             self.limpiarFramesMatrices()                   
-            self.titulo.configure(text= 'Intersección A, B')
+            self.titulo.configure(text= 'Intersección entre A y B')
             self.operacionSeleccionada = 'interseccionab'
             self.widgets2MatricesOperacion()
         if valor == 11:
             self.limpiarBotones()
             self.limpiarFramesMatrices()
-            self.titulo.configure(text= 'Diferencia A, B')
+            self.titulo.configure(text= 'Diferencia entre A y B')
             self.operacionSeleccionada = 'diferenciaab'
             self.widgets2MatricesOperacion()
         if valor == 12:
             self.limpiarBotones()
             self.limpiarFramesMatrices()
-            self.titulo.configure(text= 'Diferencia simétrica A, B')
+            self.titulo.configure(text= 'Diferencia simétrica entre A y B')
             self.operacionSeleccionada = 'simetricaab'
             self.widgets2MatricesOperacion()
                 
@@ -313,6 +313,21 @@ class Interfaz():
             namematriz = self.comboMatrices.get()
             namematriz2 = self.comboMatrices2.get()
             self.unionAB(namematriz, namematriz2)
+        if self.operacionSeleccionada =='interseccionab':
+            self.limpiarFramesMatrices()
+            namematriz = self.comboMatrices.get()
+            namematriz2 = self.comboMatrices2.get()
+            self.interseccionAB(namematriz, namematriz2)
+        if self.operacionSeleccionada =='diferenciaab':
+            self.limpiarFramesMatrices()
+            namematriz = self.comboMatrices.get()
+            namematriz2 = self.comboMatrices2.get()
+            self.diferenciaAB(namematriz, namematriz2)
+        if self.operacionSeleccionada =='simetricaab':
+            self.limpiarFramesMatrices()
+            namematriz = self.comboMatrices.get()
+            namematriz2 = self.comboMatrices2.get()
+            self.diferenciaSimetricaAB(namematriz, namematriz2)
 
 
     def matrizSeleccionada(self, nombre):
@@ -557,8 +572,146 @@ class Interfaz():
                 if matrix.retornarNodoEn(a+1, b+1) != None or matrix2.retornarNodoEn(a+1, b+1) != None:
                     nuevaCelda.insert(0,'*')
                     nuevaCelda.configure({'background': "#454545"})
-                    nuevaCelda.config(justify = 'center', fg = 'white')        
+                    nuevaCelda.config(justify = 'center', fg = 'white')
 
+    def interseccionAB(self, nombre, nombre2):        
+        matrix = self.matrizSeleccionada(nombre)        
+        x = int(matrix.filas)
+        y = int(matrix.columnas)
+        matrix2 = self.matrizSeleccionada(nombre2)
+        xx = int(matrix2.filas)
+        yy = int(matrix2.columnas)
+        if x >= xx:
+            fila = x
+        else:
+            fila = xx
+        if y >= yy:
+            columna = y
+        else:
+            columna = yy
+        #IMPRESIÓN
+        for a in range(fila):
+            for b in range(columna):
+                if a < x and b < y:
+                    #IMPRESIÓN NORMAL MATRIZ 1
+                    celda = Entry(self.panelOriginal, width = 3)
+                    celda.grid(padx = 5, pady = 5, row = a, column = b, columnspan = 1)
+                    if matrix.retornarNodoEn(a+1, b+1) != None:
+                        celda.insert(0,'*')
+                        celda.configure({'background': "#454545"})
+                        celda.config(justify = 'center', fg = 'white')
+                if a < xx and b < yy:
+                    #IMPRESIÓN NORMAL MATRIZ 2
+                    celda2 = Entry(self.panelOriginal2, width = 3)
+                    celda2.grid(padx = 5, pady = 5, row = a, column = b, columnspan = 1)
+                    if matrix2.retornarNodoEn(a+1, b+1) != None:
+                        celda2.insert(0,'*')
+                        celda2.configure({'background': "#454545"})
+                        celda2.config(justify = 'center', fg = 'white')        
+                #IMPRESIÓN DE INTERSECCIÓN
+                nuevaCelda = Entry(self.panelResultado, width = 3)
+                nuevaCelda.grid(padx = 5, pady = 5, row = a, column = b, columnspan = 1)
+                if matrix.retornarNodoEn(a+1, b+1) != None and matrix2.retornarNodoEn(a+1, b+1) != None:
+                    nuevaCelda.insert(0,'*')
+                    nuevaCelda.configure({'background': "#454545"})
+                    nuevaCelda.config(justify = 'center', fg = 'white')
+        
+    def diferenciaAB(self, nombre, nombre2):        
+        matrix = self.matrizSeleccionada(nombre)        
+        x = int(matrix.filas)
+        y = int(matrix.columnas)
+        matrix2 = self.matrizSeleccionada(nombre2)
+        xx = int(matrix2.filas)
+        yy = int(matrix2.columnas)
+        if x >= xx:
+            fila = x
+        else:
+            fila = xx
+        if y >= yy:
+            columna = y
+        else:
+            columna = yy
+        #IMPRESIÓN
+        for a in range(fila):
+            for b in range(columna):
+                if a < x and b < y:
+                    #IMPRESIÓN NORMAL MATRIZ 1
+                    celda = Entry(self.panelOriginal, width = 3)
+                    celda.grid(padx = 5, pady = 5, row = a, column = b, columnspan = 1)
+                    if matrix.retornarNodoEn(a+1, b+1) != None:
+                        celda.insert(0,'*')
+                        celda.configure({'background': "#454545"})
+                        celda.config(justify = 'center', fg = 'white')
+                if a < xx and b < yy:
+                    #IMPRESIÓN NORMAL MATRIZ 2
+                    celda2 = Entry(self.panelOriginal2, width = 3)
+                    celda2.grid(padx = 5, pady = 5, row = a, column = b, columnspan = 1)
+                    if matrix2.retornarNodoEn(a+1, b+1) != None:
+                        celda2.insert(0,'*')
+                        celda2.configure({'background': "#454545"})
+                        celda2.config(justify = 'center', fg = 'white')        
+                #IMPRESIÓN DE DIFERENCIA
+                nuevaCelda = Entry(self.panelResultado, width = 3)
+                nuevaCelda.grid(padx = 5, pady = 5, row = a, column = b, columnspan = 1)
+                if matrix.retornarNodoEn(a+1, b+1) != None:
+                    nuevaCelda.insert(0,'*')
+                    nuevaCelda.configure({'background': "#454545"})
+                    nuevaCelda.config(justify = 'center', fg = 'white')
+                    if matrix2.retornarNodoEn(a+1, b+1) != None:                        
+                        nuevaCelda.configure({'background': "white"})                        
+                        nuevaCelda.delete(0, tk.END)
+
+    def diferenciaSimetricaAB(self, nombre, nombre2):        
+        matrix = self.matrizSeleccionada(nombre)        
+        x = int(matrix.filas)
+        y = int(matrix.columnas)
+        matrix2 = self.matrizSeleccionada(nombre2)
+        xx = int(matrix2.filas)
+        yy = int(matrix2.columnas)
+        if x >= xx:
+            fila = x
+        else:
+            fila = xx
+        if y >= yy:
+            columna = y
+        else:
+            columna = yy
+        #IMPRESIÓN
+        for a in range(fila):
+            for b in range(columna):
+                if a < x and b < y:
+                    #IMPRESIÓN NORMAL MATRIZ 1
+                    celda = Entry(self.panelOriginal, width = 3)
+                    celda.grid(padx = 5, pady = 5, row = a, column = b, columnspan = 1)
+                    if matrix.retornarNodoEn(a+1, b+1) != None:
+                        celda.insert(0,'*')
+                        celda.configure({'background': "#454545"})
+                        celda.config(justify = 'center', fg = 'white')
+                if a < xx and b < yy:
+                    #IMPRESIÓN NORMAL MATRIZ 2
+                    celda2 = Entry(self.panelOriginal2, width = 3)
+                    celda2.grid(padx = 5, pady = 5, row = a, column = b, columnspan = 1)
+                    if matrix2.retornarNodoEn(a+1, b+1) != None:
+                        celda2.insert(0,'*')
+                        celda2.configure({'background': "#454545"})
+                        celda2.config(justify = 'center', fg = 'white')        
+                #IMPRESIÓN DE DIFERENCIA SIMÉTRICA
+                nuevaCelda = Entry(self.panelResultado, width = 3)
+                nuevaCelda.grid(padx = 5, pady = 5, row = a, column = b, columnspan = 1)
+                if matrix.retornarNodoEn(a+1, b+1) != None:
+                    nuevaCelda.insert(0,'*')
+                    nuevaCelda.configure({'background': "#454545"})
+                    nuevaCelda.config(justify = 'center', fg = 'white')
+                    if matrix2.retornarNodoEn(a+1, b+1) != None:
+                        nuevaCelda.configure({'background': "white"})                        
+                        nuevaCelda.delete(0, tk.END)
+                if matrix2.retornarNodoEn(a+1, b+1) != None:
+                    nuevaCelda.insert(0,'*')
+                    nuevaCelda.configure({'background': "#454545"})
+                    nuevaCelda.config(justify = 'center', fg = 'white')
+                    if matrix.retornarNodoEn(a+1, b+1) != None:                        
+                        nuevaCelda.configure({'background': "white"})                        
+                        nuevaCelda.delete(0, tk.END)
 
     def abrirXML(self):        
         archivo = filedialog.askopenfilename(initialdir = "/", title = "Seleccione el archivo XML: ", filetypes = (("archivos XML", "*.xml"),("all files","*.*")))        
