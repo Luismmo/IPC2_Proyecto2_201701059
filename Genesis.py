@@ -1223,8 +1223,7 @@ class Interfaz():
     
     def desplegarPDF(self):
         try:
-            os.system('/Documentación/Documentación Proyecto2 - IPC2.pdf')
-            open_new_tab('Reporte HTML.html')
+            os.system('Documentacion\Documentacion.pdf')            
         except:
             messagebox.showinfo(message="El archivo no se puede visualizar, puede que haya sido eliminado.", title="Advertencia")
 

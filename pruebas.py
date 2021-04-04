@@ -1,7 +1,9 @@
 import datetime
 from webbrowser import open_new_tab
 import os
-os.startfile('\Documentacion\Documentación Proyecto2 - IPC2.pdf')
+os.system('Documentacion\Documentacion.pdf')
+#os.startfile('\Documentacion\Documentación Proyecto2 - IPC2.pdf')
+#open_new_tab('/Documentación/Documentación Proyecto2 - IPC2.pdf')
 programa ='reporte en HTML'
 url = '/'
 body ='a ver que sale'
