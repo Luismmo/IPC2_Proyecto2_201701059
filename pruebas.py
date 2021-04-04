@@ -1,3 +1,11 @@
+import datetime
+from webbrowser import open_new_tab
+programa ='reporte en HTML'
+url = '/'
+body ='a ver que sale'
+ahora = datetime.datetime.today().strftime("%d/%m/%Y - %H:%M:%S")
+print(ahora)
+#open_new_tab(nombreArchivo)
 """from tkinter import *
 from tkinter import messagebox
  
