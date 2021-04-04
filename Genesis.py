@@ -47,8 +47,8 @@ class Interfaz():
         self.reportemenu.add_command(label = "Desplegar HTML", command = lambda: self.generarHTML())
 
         self.helpmenu = Menu(self.menubar, tearoff=0)
-        self.helpmenu.add_command(label="Información del desarrollador")
-        self.helpmenu.add_command(label="Documentación del programa")
+        self.helpmenu.add_command(label="Información del desarrollador", command = lambda: self.mostrarInformación())
+        self.helpmenu.add_command(label="Documentación del programa", command = lambda: self.desplegarPDF())
 
         #lo que se muestra en el menú desplegable
         self.menubar.add_cascade(label="Cargar archivo", menu=self.cargarmenu)
@@ -1218,5 +1218,14 @@ class Interfaz():
         except: 
             print('Excepción controlada')
 
+    def mostrarInformación(self):
+        messagebox.showinfo(message='Nombre: Luis Amilcar Morales Xón\nCarnet: 201701059\nCurso:Introducción a la programación y computación 2',title='Información del desarrollador')
+    
+    def desplegarPDF(self):
+        try:
+            os.system('/Documentación/Documentación Proyecto2 - IPC2.pdf')
+            open_new_tab('Reporte HTML.html')
+        except:
+            messagebox.showinfo(message="El archivo no se puede visualizar, puede que haya sido eliminado.", title="Advertencia")
 
 ventana = Interfaz()

@@ -1,12 +1,14 @@
 import datetime
 from webbrowser import open_new_tab
+import os
+os.startfile('\Documentacion\Documentación Proyecto2 - IPC2.pdf')
 programa ='reporte en HTML'
 url = '/'
 body ='a ver que sale'
 ahora = datetime.datetime.today().strftime("%d/%m/%Y - %H:%M:%S")
 print(ahora)
 a ='a'
-int(a)
+#int(a)
 #print(type(ahora))
 #open_new_tab(nombreArchivo)
 """from tkinter import *
