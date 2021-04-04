@@ -47,8 +47,8 @@ class Interfaz():
         self.reportemenu.add_command(label = "Desplegar HTML", command = lambda: self.generarHTML())
 
         self.helpmenu = Menu(self.menubar, tearoff=0)
-        self.helpmenu.add_command(label="Información del desarrollador")
-        self.helpmenu.add_command(label="Documentación del programa")
+        self.helpmenu.add_command(label="Información del desarrollador", command = lambda: self.mostrarInformación())
+        self.helpmenu.add_command(label="Documentación del programa", command = lambda: self.desplegarPDF())
 
         #lo que se muestra en el menú desplegable
         self.menubar.add_cascade(label="Cargar archivo", menu=self.cargarmenu)
@@ -310,15 +310,21 @@ class Interfaz():
         if self.operacionSeleccionada == 'area':
             self.limpiarFramesMatrices()
             namematriz = self.comboMatrices.get()
-            descripcion = '-'            
-            descripcion = self.LimpiarZona(namematriz,int(self.x1.get()), int(self.y1.get()),int(self.x2.get()), int(self.y2.get()))
+            descripcion = '-'
+            if self.x1.get().isdigit() and self.y1.get().isdigit() and self.x2.get().isdigit() and self.y2.get().isdigit():
+                descripcion = self.LimpiarZona(namematriz,int(self.x1.get()), int(self.y1.get()),int(self.x2.get()), int(self.y2.get()))
+            else:
+                descripcion = 'Error: valores ingresados no numéricos.'
             ahora = datetime.datetime.today().strftime("%d/%m/%Y - %H:%M:%S")            
             self.operacionesHechas +='<tr><td>'+ahora+'</td><td>'+descripcion+'</td><td>Limpiar área en una matriz</td><td>'+namematriz+'</td><td></td></tr>\n'
         if self.operacionSeleccionada == 'lineah':
             self.limpiarFramesMatrices()            
             namematriz = self.comboMatrices.get()
             descripcion = '-'
-            descripcion = self.LimpiarZona(namematriz,int(self.filaEntry.get()), int(self.columnaEntry.get()),int(self.filaEntry.get()), int(self.columnaEntry.get())+int(self.cantidadEntry.get())-1)
+            if self.filaEntry.get().isdigit() and self.columnaEntry.get() and self.cantidadEntry.get().isdigit():
+                descripcion = self.LimpiarZona(namematriz,int(self.filaEntry.get()), int(self.columnaEntry.get()),int(self.filaEntry.get()), int(self.columnaEntry.get())+int(self.cantidadEntry.get())-1)
+            else:
+                descripcion = 'Error: valores ingresados no numéricos.'
             #self.addLineaHorizontal(namematriz,int(self.filaEntry.get()), int(self.columnaEntry.get()), int(self.cantidadEntry.get()))
             ahora = datetime.datetime.today().strftime("%d/%m/%Y - %H:%M:%S")            
             self.operacionesHechas +='<tr><td>'+ahora+'</td><td>'+descripcion+'</td><td>Dibujar linea horizontal</td><td>'+namematriz+'</td><td></td></tr>\n'
@@ -326,7 +332,10 @@ class Interfaz():
             self.limpiarFramesMatrices()
             namematriz = self.comboMatrices.get()
             descripcion = '-'
-            descripcion = self.LimpiarZona(namematriz,int(self.filaEntry.get()), int(self.columnaEntry.get()),int(self.filaEntry.get())+int(self.cantidadEntry.get())-1, int(self.columnaEntry.get()))
+            if self.filaEntry.get().isdigit() and self.columnaEntry.get() and self.cantidadEntry.get().isdigit():
+                descripcion = self.LimpiarZona(namematriz,int(self.filaEntry.get()), int(self.columnaEntry.get()),int(self.filaEntry.get())+int(self.cantidadEntry.get())-1, int(self.columnaEntry.get()))
+            else:
+                descripcion = 'Error: valores ingresados no numéricos.'
             #self.addLineaVertical(namematriz,int(self.filaEntry.get()), int(self.columnaEntry.get()), int(self.cantidadEntry.get()))
             ahora = datetime.datetime.today().strftime("%d/%m/%Y - %H:%M:%S")            
             self.operacionesHechas +='<tr><td>'+ahora+'</td><td>'+descripcion+'</td><td>Dibujar linea vertical</td><td>'+namematriz+'</td><td></td></tr>\n'
@@ -334,14 +343,20 @@ class Interfaz():
             self.limpiarFramesMatrices()
             namematriz = self.comboMatrices.get()            
             descripcion = '-'
-            descripcion = self.dibujarRectangulo(namematriz,int(self.x1.get()), int(self.y1.get()), int(self.x1.get()) + int(self.altoentry.get())-1, int(self.y1.get()) + int(self.anchoentry.get())-1)
+            if self.x1.get().isdigit() and self.y1.get().isdigit() and self.anchoentry.get().isdigit() and self.altoentry.get().isdigit():
+                descripcion = self.dibujarRectangulo(namematriz,int(self.x1.get()), int(self.y1.get()), int(self.x1.get()) + int(self.altoentry.get())-1, int(self.y1.get()) + int(self.anchoentry.get())-1)
+            else:
+                descripcion = 'Error: valores ingresados no numéricos.'
             ahora = datetime.datetime.today().strftime("%d/%m/%Y - %H:%M:%S")            
             self.operacionesHechas +='<tr><td>'+ahora+'</td><td>'+descripcion+'</td><td>Dibujar rectangulo</td><td>'+namematriz+'</td><td></td></tr>\n'
         if self.operacionSeleccionada =='addtriangulo':
             self.limpiarFramesMatrices()
             namematriz = self.comboMatrices.get()            
             descripcion = '-'
-            descripcion = self.dibujarTriangulo(namematriz,int(self.x1.get()), int(self.y1.get()), int(self.x1.get()) + int(self.datoentry.get())-1, int(self.y1.get()) + int(self.datoentry.get())-1)
+            if self.x1.get().isdigit() and self.y1.get().isdigit() and self.datoentry.get().isdigit():
+                descripcion = self.dibujarTriangulo(namematriz,int(self.x1.get()), int(self.y1.get()), int(self.x1.get()) + int(self.datoentry.get())-1, int(self.y1.get()) + int(self.datoentry.get())-1)
+            else:
+                descripcion = 'Error: valores ingresados no numéricos.'
             ahora = datetime.datetime.today().strftime("%d/%m/%Y - %H:%M:%S")            
             self.operacionesHechas +='<tr><td>'+ahora+'</td><td>'+descripcion+'</td><td>Dibujar triangulo rectangulo</td><td>'+namematriz+'</td><td></td></tr>\n'
         if self.operacionSeleccionada =='unionab':
@@ -550,39 +565,42 @@ class Interfaz():
                     celda.configure({'background': "#454545"})
                     celda.config(justify = 'center', fg = 'white')
 
-        for a in range(x+1):
-            for b in range(y+1):        
-                if (x1<=x and x2<=x) and (y1<=y and y2<=y):
-                    if x1<=x2 and y1<=y2:    
-                        #IMPRESIÓN ZONA LIMPIA 
-                        nuevacelda = Entry(self.panelResultado, width = 3)    
-                        nuevacelda.grid(padx = 5, pady = 5, row = a, column = b, columnspan = 1)                
-                        if a == 0 and b ==0:
-                            nuevacelda.insert(0,'A')
-                            nuevacelda.configure({'backgroun':'red3'})
-                            nuevacelda.config(justify = 'center',fg = 'white')
-                        if a == 0 and b>0:
-                            nuevacelda.insert(0,b)
-                            nuevacelda.configure({'backgroun':'gray'})
-                            nuevacelda.config(justify = 'center',fg = 'white')
-                        if a > 0 and b==0:
-                            nuevacelda.insert(0,a)
-                            nuevacelda.configure({'backgroun':'gray'})
-                            nuevacelda.config(justify = 'center',fg = 'white')
-                        if matrix.retornarNodoEn(a, b) != None:
-                            nuevacelda.insert(0,'*')
-                            nuevacelda.configure({'background': "#454545"})
-                            nuevacelda.config(justify = 'center', fg = 'white')
+        if x1>0 and x2>0 and y1>0 and y2>0:
+            for a in range(x+1):
+                for b in range(y+1):        
+                    if (x1<=x and x2<=x) and (y1<=y and y2<=y):
+                        if x1<=x2 and y1<=y2:    
+                            #IMPRESIÓN ZONA LIMPIA 
+                            nuevacelda = Entry(self.panelResultado, width = 3)    
+                            nuevacelda.grid(padx = 5, pady = 5, row = a, column = b, columnspan = 1)                
+                            if a == 0 and b ==0:
+                                nuevacelda.insert(0,'A')
+                                nuevacelda.configure({'backgroun':'red3'})
+                                nuevacelda.config(justify = 'center',fg = 'white')
+                            if a == 0 and b>0:
+                                nuevacelda.insert(0,b)
+                                nuevacelda.configure({'backgroun':'gray'})
+                                nuevacelda.config(justify = 'center',fg = 'white')
+                            if a > 0 and b==0:
+                                nuevacelda.insert(0,a)
+                                nuevacelda.configure({'backgroun':'gray'})
+                                nuevacelda.config(justify = 'center',fg = 'white')
+                            if matrix.retornarNodoEn(a, b) != None:
+                                nuevacelda.insert(0,'*')
+                                nuevacelda.configure({'background': "#454545"})
+                                nuevacelda.config(justify = 'center', fg = 'white')
+                                if (a>=(x1) and a<=(x2)) and (b>=(y1) and b<=(y2)):
+                                    nuevacelda.configure({'backgroun':'purple1'})
+                                    #nuevacelda.delete(0, tk.END)
                             if (a>=(x1) and a<=(x2)) and (b>=(y1) and b<=(y2)):
                                 nuevacelda.configure({'backgroun':'purple1'})
-                                #nuevacelda.delete(0, tk.END)
-                        if (a>=(x1) and a<=(x2)) and (b>=(y1) and b<=(y2)):
-                            nuevacelda.configure({'backgroun':'purple1'})
+                        else:
+                            return 'Error: Incongruencia en las coordenadas ingresadas.'
                     else:
-                        return 'Error: Incongruencia en las coordenadas ingresadas.'
-                else:
-                    return 'Error: Las coordenadas ingresadas sobrepasan el tamaño de la matriz.'
-        return '-'
+                        return 'Error: Las coordenadas ingresadas sobrepasan el tamaño de la matriz.'
+            return '-'
+        else:
+            return 'Error: Coordenadas ingresadas son negativas.'
 
     def dibujarRectangulo(self, nombre, x1,y1,x2,y2):            
         matrix = self.matrizSeleccionada(nombre)
@@ -610,33 +628,45 @@ class Interfaz():
                     celda.insert(0,'*')
                     celda.configure({'background': "#454545"})
                     celda.config(justify = 'center', fg = 'white')
-
-        for a in range(x+1):
-            for b in range(y+1):
-                if (x1<=x and x2<=x) and (y1<=y and y2<=y):
-                    if x1<x2 and y1<y2:
-                        #IMPRESIÓN DEL RECTANGULO
-                        nuevacelda = Entry(self.panelResultado, width = 3)    
-                        nuevacelda.grid(padx = 5, pady = 5, row = a, column = b, columnspan = 1)                
-                        if a == 0 and b ==0:
-                            nuevacelda.insert(0,'A')
-                            nuevacelda.configure({'backgroun':'red3'})
-                            nuevacelda.config(justify = 'center',fg = 'white')
-                        if a == 0 and b>0:
-                            nuevacelda.insert(0,b)
-                            nuevacelda.configure({'backgroun':'gray'})
-                            nuevacelda.config(justify = 'center',fg = 'white')
-                        if a > 0 and b==0:
-                            nuevacelda.insert(0,a)
-                            nuevacelda.configure({'backgroun':'gray'})
-                            nuevacelda.config(justify = 'center',fg = 'white')
-                        if matrix.retornarNodoEn(a, b) != None:
-                            nuevacelda.insert(0,'*')
-                            nuevacelda.configure({'background': "#454545"})
-                            nuevacelda.config(justify = 'center', fg = 'white')
+        if x1>0 and x2>0 and y1>0 and y2>0:
+            for a in range(x+1):
+                for b in range(y+1):
+                    if (x1<=x and x2<=x) and (y1<=y and y2<=y):
+                        if x1<x2 and y1<y2:
+                            #IMPRESIÓN DEL RECTANGULO
+                            nuevacelda = Entry(self.panelResultado, width = 3)    
+                            nuevacelda.grid(padx = 5, pady = 5, row = a, column = b, columnspan = 1)                
+                            if a == 0 and b ==0:
+                                nuevacelda.insert(0,'A')
+                                nuevacelda.configure({'backgroun':'red3'})
+                                nuevacelda.config(justify = 'center',fg = 'white')
+                            if a == 0 and b>0:
+                                nuevacelda.insert(0,b)
+                                nuevacelda.configure({'backgroun':'gray'})
+                                nuevacelda.config(justify = 'center',fg = 'white')
+                            if a > 0 and b==0:
+                                nuevacelda.insert(0,a)
+                                nuevacelda.configure({'backgroun':'gray'})
+                                nuevacelda.config(justify = 'center',fg = 'white')
+                            if matrix.retornarNodoEn(a, b) != None:
+                                nuevacelda.insert(0,'*')
+                                nuevacelda.configure({'background': "#454545"})
+                                nuevacelda.config(justify = 'center', fg = 'white')
+                                if (a==(x1)) and (b>=(y1) and b<=(y2)):
+                                    nuevacelda.configure({'backgroun':'purple1'})
+                                    #nuevacelda.delete(0, tk.END)
+                                if (a==(x2)) and (b>=(y1) and b<=(y2)):
+                                    nuevacelda.configure({'backgroun':'purple1'})
+                                    #nuevacelda.delete(0, tk.END)
+                                if (a>=(x1) and a<=(x2)) and (b==(y1)):
+                                    nuevacelda.configure({'backgroun':'purple1'})
+                                    #nuevacelda.delete(0, tk.END)
+                                if (a>=(x1) and a<=(x2)) and (b==(y2)):
+                                    nuevacelda.configure({'backgroun':'purple1'})
+                                    #nuevacelda.delete(0, tk.END)
                             if (a==(x1)) and (b>=(y1) and b<=(y2)):
-                                nuevacelda.configure({'backgroun':'purple1'})
-                                #nuevacelda.delete(0, tk.END)
+                                    nuevacelda.configure({'backgroun':'purple1'})
+                                    #nuevacelda.delete(0, tk.END)
                             if (a==(x2)) and (b>=(y1) and b<=(y2)):
                                 nuevacelda.configure({'backgroun':'purple1'})
                                 #nuevacelda.delete(0, tk.END)
@@ -646,23 +676,13 @@ class Interfaz():
                             if (a>=(x1) and a<=(x2)) and (b==(y2)):
                                 nuevacelda.configure({'backgroun':'purple1'})
                                 #nuevacelda.delete(0, tk.END)
-                        if (a==(x1)) and (b>=(y1) and b<=(y2)):
-                                nuevacelda.configure({'backgroun':'purple1'})
-                                #nuevacelda.delete(0, tk.END)
-                        if (a==(x2)) and (b>=(y1) and b<=(y2)):
-                            nuevacelda.configure({'backgroun':'purple1'})
-                            #nuevacelda.delete(0, tk.END)
-                        if (a>=(x1) and a<=(x2)) and (b==(y1)):
-                            nuevacelda.configure({'backgroun':'purple1'})
-                            #nuevacelda.delete(0, tk.END)
-                        if (a>=(x1) and a<=(x2)) and (b==(y2)):
-                            nuevacelda.configure({'backgroun':'purple1'})
-                            #nuevacelda.delete(0, tk.END)
+                        else:
+                            return 'Error: Incongruencia en las coordenadas ingresadas.'
                     else:
-                        return 'Error: Incongruencia en las coordenadas ingresadas.'
-                else:
-                    return 'Error: Las coordenadas ingresadas sobrepasan el tamaño de la matriz.'
-        return '-'
+                        return 'Error: Las coordenadas ingresadas sobrepasan el tamaño de la matriz.'
+            return '-'
+        else:
+            return 'Error: Coordenadas ingresadas son negativas.'
     
     def dibujarTriangulo(self, nombre, x1, y1, x2, y2):            
         matrix = self.matrizSeleccionada(nombre)
@@ -694,59 +714,61 @@ class Interfaz():
                     celda.insert(0,'*')
                     celda.configure({'background': "#454545"})
                     celda.config(justify = 'center', fg = 'white')
-
-        for a in range(x+1):
-            for b in range(y+1):
-                if (x1<=x and x2<=x) and (y1<=y and y2<=y):
-                    if x1<x2 and y1<y2:
-                        #IMPRESIÓN DEL TRIANGULO RECTANGULO
-                        nuevacelda = Entry(self.panelResultado, width = 3)    
-                        nuevacelda.grid(padx = 5, pady = 5, row = a, column = b, columnspan = 1)                
-                        if a == 0 and b ==0:
-                            nuevacelda.insert(0,'A')
-                            nuevacelda.configure({'backgroun':'red3'})
-                            nuevacelda.config(justify = 'center',fg = 'white')
-                        if a == 0 and b>0:
-                            nuevacelda.insert(0,b)
-                            nuevacelda.configure({'backgroun':'gray'})
-                            nuevacelda.config(justify = 'center',fg = 'white')
-                        if a > 0 and b==0:
-                            nuevacelda.insert(0,a)
-                            nuevacelda.configure({'backgroun':'gray'})
-                            nuevacelda.config(justify = 'center',fg = 'white')
-                        if matrix.retornarNodoEn(a, b) != None:
-                            nuevacelda.insert(0,'*')
-                            nuevacelda.configure({'background': "#454545"})
-                            nuevacelda.config(justify = 'center', fg = 'white')
+        if x1>0 and x2>0 and y1>0 and y2>0:
+            for a in range(x+1):
+                for b in range(y+1):
+                    if (x1<=x and x2<=x) and (y1<=y and y2<=y):
+                        if x1<x2 and y1<y2:
+                            #IMPRESIÓN DEL TRIANGULO RECTANGULO
+                            nuevacelda = Entry(self.panelResultado, width = 3)    
+                            nuevacelda.grid(padx = 5, pady = 5, row = a, column = b, columnspan = 1)                
+                            if a == 0 and b ==0:
+                                nuevacelda.insert(0,'A')
+                                nuevacelda.configure({'backgroun':'red3'})
+                                nuevacelda.config(justify = 'center',fg = 'white')
+                            if a == 0 and b>0:
+                                nuevacelda.insert(0,b)
+                                nuevacelda.configure({'backgroun':'gray'})
+                                nuevacelda.config(justify = 'center',fg = 'white')
+                            if a > 0 and b==0:
+                                nuevacelda.insert(0,a)
+                                nuevacelda.configure({'backgroun':'gray'})
+                                nuevacelda.config(justify = 'center',fg = 'white')
+                            if matrix.retornarNodoEn(a, b) != None:
+                                nuevacelda.insert(0,'*')
+                                nuevacelda.configure({'background': "#454545"})
+                                nuevacelda.config(justify = 'center', fg = 'white')
+                                if (a==(x2)) and (b>=(y1) and b<=(y2)):
+                                    nuevacelda.configure({'backgroun':'purple1'})
+                                    #nuevacelda.delete(0, tk.END)
+                                if (a>=(x1) and a<=(x2)) and (b==(y1)):
+                                    nuevacelda.configure({'backgroun':'purple1'})
+                                    #nuevacelda.delete(0, tk.END)                    
+                                
+                                if (a>(x1) and a<(x2)) and (nuevaColumna==b) and (nuevaFila==a) and (b>(y1) and b<(y2)):
+                                    nuevacelda.configure({'backgroun':'purple1'})
+                                    #nuevacelda.delete(0, tk.END)              
+                                    nuevaColumna+=1   
+                                    nuevaFila+=1       
+                            
                             if (a==(x2)) and (b>=(y1) and b<=(y2)):
                                 nuevacelda.configure({'backgroun':'purple1'})
                                 #nuevacelda.delete(0, tk.END)
                             if (a>=(x1) and a<=(x2)) and (b==(y1)):
                                 nuevacelda.configure({'backgroun':'purple1'})
-                                #nuevacelda.delete(0, tk.END)                    
-                            
+                                #nuevacelda.delete(0, tk.END)                                
                             if (a>(x1) and a<(x2)) and (nuevaColumna==b) and (nuevaFila==a) and (b>(y1) and b<(y2)):
                                 nuevacelda.configure({'backgroun':'purple1'})
                                 #nuevacelda.delete(0, tk.END)              
-                                nuevaColumna+=1   
-                                nuevaFila+=1       
-                        
-                        if (a==(x2)) and (b>=(y1) and b<=(y2)):
-                            nuevacelda.configure({'backgroun':'purple1'})
-                            #nuevacelda.delete(0, tk.END)
-                        if (a>=(x1) and a<=(x2)) and (b==(y1)):
-                            nuevacelda.configure({'backgroun':'purple1'})
-                            #nuevacelda.delete(0, tk.END)                                
-                        if (a>(x1) and a<(x2)) and (nuevaColumna==b) and (nuevaFila==a) and (b>(y1) and b<(y2)):
-                            nuevacelda.configure({'backgroun':'purple1'})
-                            #nuevacelda.delete(0, tk.END)              
-                            nuevaColumna+=1      
-                            nuevaFila+=1
+                                nuevaColumna+=1      
+                                nuevaFila+=1
+                        else:
+                            return 'Error: Incongruencia en las coordenadas ingresadas.'
                     else:
-                        return 'Error: Incongruencia en las coordenadas ingresadas.'
-                else:
-                    return 'Error: Las coordenadas ingresadas sobrepasan el tamaño de la matriz.'
-        return '-'
+                        return 'Error: Las coordenadas ingresadas sobrepasan el tamaño de la matriz.'
+            return '-'
+        else:
+            return 'Error: Coordenadas ingresadas son negativas.'
 
     def unionAB(self, nombre, nombre2):        
         matrix = self.matrizSeleccionada(nombre)        
@@ -1196,5 +1218,13 @@ class Interfaz():
         except: 
             print('Excepción controlada')
 
+    def mostrarInformación(self):
+        messagebox.showinfo(message='Nombre: Luis Amilcar Morales Xón\nCarnet: 201701059\nCurso:Introducción a la programación y computación 2',title='Información del desarrollador')
+    
+    def desplegarPDF(self):
+        try:
+            os.system('Documentacion\Documentacion.pdf')            
+        except:
+            messagebox.showinfo(message="El archivo no se puede visualizar, puede que haya sido eliminado.", title="Advertencia")
 
 ventana = Interfaz()
